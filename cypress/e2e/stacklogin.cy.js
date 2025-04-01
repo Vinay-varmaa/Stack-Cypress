@@ -9,6 +9,7 @@ describe('Login page', () => {
     cy.get("[class='loginInputs flex justify-content-center']").find("input").eq(0).type("wms.logisticsstudio@gmail.com")
     cy.get("[class='loginInputs flex justify-content-center']").find("input").eq(1).type("Test@1234").then(()=>{
       cy.log('Test failed : "Incorrect Password"')
+      cy.screenshot("Incorrect Password")
     })
     cy.get(".p-button-label").click();
     cy.pathname('/home').then(()=>{

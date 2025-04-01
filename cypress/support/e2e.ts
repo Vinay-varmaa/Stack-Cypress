@@ -19,3 +19,7 @@ import './commands'
 Cypress.Commands.add('pathname', (expectedpathname) => {
     return cy.location('pathname').should('eq', expectedpathname);
   });  
+
+Cypress.Commands.add('pathinclude',(approxpathname) => {
+    return cy.location('pathname').should('include', approxpathname);
+  })

@@ -15,7 +15,11 @@ describe('Organizations page',()=>{
             cy.log('Test Passed : "Navigated to the orders page"')
         })   
     })
+<<<<<<< HEAD
     it('search the order with order number',()=>{
+=======
+    it('search the order and navigate to the order',()=>{
+>>>>>>> 4e09c6bb71655daa76b13b1e77e7ffdd108ef491
         cy.get("[class='tableHeaderFilters']").find("input").eq(0).type("10001746", {force:true});
         cy.wait(2000);
         cy.get("[class='p-element p-datatable-tbody']").find("a").then(($a)=>{
@@ -26,7 +30,11 @@ describe('Organizations page',()=>{
                     cy.log(`Test Passed : ${type}`);
             
             if(number === "10001746"){
+<<<<<<< HEAD
                 cy.wrap($a).click();
+=======
+                cy.wrap($a).eq(0).click();
+>>>>>>> 4e09c6bb71655daa76b13b1e77e7ffdd108ef491
                 cy.pathinclude('/orders/viewOrder').then(()=>{
                     cy.log('Test Passed : "Navigated to the view order page"')
                 })
@@ -34,8 +42,58 @@ describe('Organizations page',()=>{
             {
                 cy.log('Test failed : "Order number not found"')
             }
+<<<<<<< HEAD
             {}
         })
         })
+=======
+        })
+        })
+
+    })
+    it.only('Compare the order status',()=>{
+        cy.get("[class='tableHeaderFilters']").find("input").eq(0).type("10001746", {force:true});
+        cy.wait(2000);
+        cy.get("[class='p-element p-datatable-tbody']").find("a").then(($a)=>{
+            const number = $a.text();
+            cy.log(`Test Passed : ${number}`);
+            cy.get("[class='p-element p-datatable-tbody']").find("span").contains("Inbound").then(($span)=>{
+                    const type = $span.text();
+                    cy.log(`Test Passed : ${type}`);
+            
+            if(number === "10001746"){
+                cy.wait(2000);
+                cy.wrap($a).eq(0).should('have.text','10001746').click({force: true});
+                cy.pathinclude('/orders/viewOrder').then(()=>{
+                    cy.log('Test Passed : "Navigated to the view order page"')
+                })
+            }else
+            {
+                cy.log('Test failed : "Order number not found"')
+            }
+        })
+    })
+    cy.get("[class='status-section flex']").find("div").contains("New").then(($div) => {
+        const status = $div.text();
+        cy.log(`Test Passed : ${status}`);
+        if(status === "New"){
+            cy.log('Test Passed : "Status is New"').then()
+        }
+    }); 
+    cy.get("[placeholder='Enter Dock Number']").eq(0).type("1221");
+    cy.get("[placeholder='Enter Truck Number']").eq(1).type("4321");
+    cy.get("[class='listing-action-button ng-star-inserted']").find("i").click();
+    cy.get("[class='product-id']").find("span").then(($span) => {
+        const quantity = $span.text();
+        cy.log(`Quantity: ${quantity}`);
+        cy.get("input[placeholder='Enter Quantity']").type(quantity.trim(), {force: true})
+    })
+        cy.get("[class='inputField formFields']").eq(3).click()
+        cy.get("[role='listbox']").find("li").eq(0).click();
+        cy.get("[class='inputField formFields']").eq(4).click(); // storage location dropdown
+        cy.get("[role='listbox']").find("li").eq(2).click(); //Bin selection
+        cy.get("[class='save-button']").click();
+
+>>>>>>> 4e09c6bb71655daa76b13b1e77e7ffdd108ef491
     })
 })
