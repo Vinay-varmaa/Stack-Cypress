@@ -7,6 +7,6 @@ import { eq } from "lodash";
 //      return cy.location('pathname').should('eq',expectedpathname);
 // })
 
-Cypress.Commands.add('pathname', (expectedpathname) => {
-    return cy.location('pathname').should('eq', expectedpathname);
-  });  
+// Cypress.Commands.add('pathname', (expectedpathname) => {
+//     return cy.location('pathname').should('eq', expectedpathname);
+//   });

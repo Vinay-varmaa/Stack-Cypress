@@ -18,7 +18,11 @@ import './commands'
 
 Cypress.Commands.add('pathname', (expectedpathname) => {
     return cy.location('pathname').should('eq', expectedpathname);
-  });  
+  });
+
+Cypress.Commands.add('pathconsists', (fleetPathName) => {
+    return cy.location('pathconsists').should('eq', fleetPathName);
+});
 
 Cypress.Commands.add('pathinclude',(approxpathname) => {
     return cy.location('pathname').should('include', approxpathname);
@@ -96,4 +100,15 @@ Cypress.Commands.add('compareTheOrderStatus',(expectedStatus)=>{
             cy.log('Test Passed : "Dispatch"')
         }
     })
+})
+
+Cypress.Commands.add('fleetlogin',(email,password)=>{
+    cy.visit("https://fe-qa.fleetenable.com")
+    cy.get("[placeholder='Enter Email or Mobile Number']").type("dt@fleetenable.com");
+    cy.get("[id='auth_form_password']").type("test1234");
+    cy.get("[type='submit']").click();
+    cy.wait(5000);
+    // cy.pathconsists('/dashboard').then(()=>{
+    //     cy.log('Test Passed : "Logged in Successfully"')
+    // })
 })
