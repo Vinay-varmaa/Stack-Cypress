@@ -1,42 +1,21 @@
 const { defineConfig } = require("cypress");
+const fs = require("fs"); // Import File System module
 
-// module.exports = defineConfig({
-//   e2e: {
-//     setupNodeEvents(on, config) {
-//       // implement node event listeners here
-//     },
-//   },
-// });
-
-// const webpack = require('@cypress/webpack-preprocessor');
-
-module.exports = {
-  ...(on) => {
-    const options = {
-      webpackOptions: {
-        resolve: {
-          extensions: [".ts", ".js"],
-        },
-        module: {
-          rules: [
-            {
-              test: /\.ts$/,
-              exclude: [/node_modules/],
-              use: [
-                {
-                  loader: "ts-loader",
-                },
-              ],
-            },
-          ],
-        },
-      },
-      watchOptions: {},
-    };
-    on("file:preprocessor", webpack(options));
-  },
-
+module.exports = defineConfig({
   e2e: {
-    pageLoadTimeout: 120000, 
-  },
-};
+    pageLoadTimeout: 120000, // Adjust timeout settings as needed
+
+    setupNodeEvents(on, config) {
+      // Register the missing task "writeToFixture"
+      on("task", {
+        writeToFixture({ filename, data }) {
+          const filePath = `cypress/fixtures/${filename}`;
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2)); // Write JSON data into the file
+          return null; // Ensure Cypress returns a valid response
+        },
+      });
+
+      return config; // Cypress requires returning the config object
+    }
+  }
+});

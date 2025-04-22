@@ -29,7 +29,7 @@ Cypress.Commands.add('pathinclude',(approxpathname) => {
   })
 
 Cypress.Commands.add('login',(email,password)=>{
-    cy.visit("https://stage.stackenable.com/")
+    cy.visit("http://34.133.110.143:7073/")
     cy.get("[alt = 'Stack Enable Logo']")
     cy.get("[class='loginInputs flex justify-content-center']").find("input").eq(0).type(email);
     cy.get("[class='loginInputs flex justify-content-center']").find("input").eq(1).type(password).then(()=>{
@@ -111,4 +111,104 @@ Cypress.Commands.add('fleetlogin',(email,password)=>{
     // cy.pathconsists('/dashboard').then(()=>{
     //     cy.log('Test Passed : "Logged in Successfully"')
     // })
+})
+
+
+Cypress.Commands.add('clickOnCreateInboundOrder',()=> {
+    cy.get("[class = 'header-component']").find("button").click();
+    cy.wait(1000);
+    cy.get("[class ='p-card-content']").eq(0).click();
+    cy.get("[class = 'title']").eq(0).then(($div) => {
+        let ordertype = $div.text();
+        cy.log(ordertype);
+        if (ordertype.trim() === "Create Inbound Order") {
+            cy.log("Navigated to the Create Inbound Order Page successfully");
+        } else {
+            cy.log("Failed to navigate to the Inbound Order Page");
+        }
+    });
+});
+
+Cypress.Commands.add('enterTheRequiredFields',()=> {
+    cy.get("[class='p-inputswitch-slider']").eq(1).click();
+    cy.get("[formcontrolname='orderProccess']").eq(1).click();
+    cy.get("[name='originName']").find("input").type("AFT").invoke('val').then((originName)=>{
+        cy.get("[name='address1Origin']").find("input").type("9475, Nicola Tesla Court").invoke('val').then((address1Origin)=>{
+            cy.get("[name='originCity']").find("input").type("San Diego").invoke('val').then((originCity)=>{
+                cy.get("[name='originState']").click();
+                cy.get("[role='listbox']").find("p-dropdownitem").eq(2).click().invoke('text').then((originState)=>{
+                    cy.wait(1000);
+                    cy.get("[name='originZipcode']").type("75261").wait(1000).invoke('val').then((originZipcode)=>{
+                        cy.get("[name='selectShipper']").click();
+                        cy.get("[role='listbox']").find("p-dropdownitem").eq(1).click().invoke('text').then((selectShipper)=>{
+                            cy.get("[class='add-button']").click();
+                            cy.wait(1000);
+                            cy.get("[placeholder='Enter PO Number']").invoke('val').then((orderNumber) => {
+                                cy.log(`Order Number: ${orderNumber}`);
+                                cy.get("[name='selectProducts']").click(); // Open the dropdown
+                                cy.get("[role='listbox']").find("p-multiselectitem").eq(0).click().invoke('text').then((selectProducts)=>{
+                                    cy.get("[class='p-datatable-thead']").click();
+                                    cy.get("[class='p-element p-datatable-tbody']").find("td").eq(6).find("input").type("10" , {force : true}).invoke('val').then((itemquantity)=>{
+                                        cy.task('writeToFixture',{
+                                            filename : 'order.json',
+                                            data: {
+                                                orderNumber : orderNumber,
+                                                originName: originName,
+                                                address1Origin: address1Origin,
+                                                originCity: originCity,
+                                                originState: originState.trim(), // Trim the spaces
+                                                originZipcode: originZipcode,
+                                                shipper: selectShipper.trim(),
+                                                product: selectProducts.trim(),
+                                                quantity: itemquantity
+
+                                            }
+                                        });
+                                    })
+                                })
+                        })
+                    })
+
+                })
+            })
+        })
+    })
+
+    });
+    cy.get("[class='p-button-label']").then(($button) => {
+        cy.get("[class='p-button-label']").should('be.visible').then(($button) => {
+            if ($button.attr('disabled')) {
+                cy.log("The button is disabled. Please submit after entering all the required fields.");
+            } else {
+                cy.log("Clicked on Submit button");
+                cy.wrap($button).click();
+            }
+        });
+    });
+});
+
+Cypress.Commands.add('selectCustomerAndProducts',()=> {
+    cy.get("[name='selectShipper']").click();
+    cy.get("[role='listbox']").find("p-dropdownitem").eq(1).click().invoke('text').then((selectShipper) => {
+        cy.get("[class='add-button']").click();
+        cy.wait(1000);
+        cy.get("[name='selectProducts']").click(); // Open the dropdown
+        cy.wait(2000)
+        cy.get("[class='p-checkbox-box']").eq(0).click({force: true, multiple: true});
+        cy.get("[class='p-datatable-thead']").click();
+        let productNames: string[] = [];
+        cy.get("[class='p-element p-datatable-tbody']").find("tr").each(($row) => {
+            cy.wrap($row).find("td").eq(1).invoke("text").then((productname) => {
+                productNames.push(productname.trim());
+            })
+        }).then(() => {
+            cy.task('writeToFixture', {
+                filename: 'shipperAndProducts.json',
+                data: {
+                    shipperName: selectShipper.trim(),
+                    producstList: productNames
+                }
+            })
+        })
+    })
 })
