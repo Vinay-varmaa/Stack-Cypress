@@ -187,7 +187,7 @@ Cypress.Commands.add('enterTheRequiredFields',()=> {
     });
 });
 
-Cypress.Commands.add('selectCustomerAndProducts',()=> {
+Cypress.Commands.add('ValidateProducts',()=> {
     cy.get("[name='selectShipper']").click();
     cy.get("[role='listbox']").find("p-dropdownitem").eq(1).click().invoke('text').then((selectShipper) => {
         cy.get("[class='add-button']").click();
@@ -203,12 +203,29 @@ Cypress.Commands.add('selectCustomerAndProducts',()=> {
             })
         }).then(() => {
             cy.task('writeToFixture', {
-                filename: 'shipperAndProducts.json',
+                filename: 'Products.json',
                 data: {
                     shipperName: selectShipper.trim(),
                     producstList: productNames
                 }
             })
+        })
+    })
+})
+
+Cypress.Commands.add('validationShippers',()=>{
+    let shippernames: string[] = [];
+    cy.get("[name='selectShipper']").click();
+    cy.get("[role='listbox']").find("li").each(($shipper)=>{
+        cy.wrap($shipper).find("span").invoke("text").then((shippername)=>{
+            shippernames.push(shippername.trim());
+        })
+    }).then(()=>{
+        cy.task('writeToFixture', {
+            filename: 'Shippers.json',
+            data: {
+                shipperName: shippernames
+            }
         })
     })
 })

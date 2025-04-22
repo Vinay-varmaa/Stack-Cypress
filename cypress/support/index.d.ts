@@ -10,6 +10,9 @@ declare namespace Cypress {
 
         order(): void
 
-        selectCustomerAndProducts(): void
+        ValidateProducts(): void
+
+
+        validationShippers(): void
     }
 }

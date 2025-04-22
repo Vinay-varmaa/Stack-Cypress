@@ -7,10 +7,10 @@ describe('Validation of Shipper and Product Details in the Create Order', () => 
         });
     });
     //C06 starts from here
-    it('Get the shippers and the Respective Products', () => {
+    it('Get the shippers Respective Products', () => {
         cy.clickOnCreateInboundOrder();
-        cy.selectCustomerAndProducts();
-        cy.fixture('shipperAndProducts').then((data) => {
+        cy.ValidateProducts();
+        cy.fixture('Products').then((data) => {
             cy.get("[class='sidebar-full']").find("app-side-nav-option").find("a[href='/products']").click();
             cy.get("[class='inputField formFields']").click();
             cy.wait(1000)
@@ -20,7 +20,7 @@ describe('Validation of Shipper and Product Details in the Create Order', () => 
             let productNames = [];
 
             cy.get("[class='p-element p-datatable-tbody']").find("tr").each(($row) => {
-                cy.wrap($row).find("td").eq(1).then(($ExactName)=>{
+                cy.wrap($row).find("td").eq(1).then(($ExactName) => {
                     cy.wrap($ExactName).find("span").eq(3).invoke("text").then((productName) => {
                         productNames.push(productName.trim());
                         cy.log(productNames)
@@ -28,11 +28,32 @@ describe('Validation of Shipper and Product Details in the Create Order', () => 
                     });
                 })
             }).then(() => {
-            //     cy.log(productNames);
+                //     cy.log(productNames);
                 const sortedProducts = data.producstList.sort();
                 expect(JSON.stringify(productNames.sort())).to.deep.equal(JSON.stringify(sortedProducts), 'Products matched');
             });
         });
     });
+    it.only('Get the Respective Shippers of the Carriers', () => {
+        cy.clickOnCreateInboundOrder();
+        cy.validationShippers();
+        cy.fixture('Shippers').then((data) => {
+            cy.get("[class='sidebar-full']").find("app-side-nav-option").find("a[href='/shipper']").click();
+            let shipperNames = [];
+            cy.get("[class='p-element p-datatable-tbody']").find("tr").each(($row) => {
+                cy.wrap($row).find("td").eq(1).then(($ExactName) => {
+                    cy.wrap($ExactName).find("span").eq(1).invoke("text").then((shipperName) => {
+                        shipperNames.push(shipperName.trim());
+                        cy.log(shipperNames)
+                        cy.log("Collected shippers:", JSON.stringify(shipperNames));
+                    })
+                });
+            }).then(() => {
+                const sortedShippers = data.shipperName.sort();
+                expect(JSON.stringify(shipperNames.sort())).to.deep.equal(JSON.stringify(sortedShippers), 'Shippers matched');
+            })
+        })
+    });
+
 
 })
