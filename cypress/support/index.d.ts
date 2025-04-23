@@ -14,5 +14,7 @@ declare namespace Cypress {
 
 
         validationShippers(): void
+
+        navigateToOrderModule(): void
     }
 }

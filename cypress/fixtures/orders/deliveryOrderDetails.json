@@ -1,0 +1,12 @@
+{
+  "AddressLine1": "123 William Street, Manhattan, New York, New York, 10038, United States",
+  "AddressLine2": "123 William Street",
+  "City" : "New York",
+  "State": "New York",
+  "Zip": "10038",
+  "Country": "India",
+  "LOS": "Test los",
+  "HAWB": "1258HAWB",
+  "ItemName": "Laptop",
+  "TotalWeight": "150"
+}

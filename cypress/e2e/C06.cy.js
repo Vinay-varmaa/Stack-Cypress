@@ -31,10 +31,11 @@ describe('Validation of Shipper and Product Details in the Create Order', () => 
                 //     cy.log(productNames);
                 const sortedProducts = data.producstList.sort();
                 expect(JSON.stringify(productNames.sort())).to.deep.equal(JSON.stringify(sortedProducts), 'Products matched');
+                cy.log("All the Products are related to the respective shipper")
             });
         });
     });
-    it.only('Get the Respective Shippers of the Carriers', () => {
+    it('Get the Respective Shippers of the Carriers', () => {
         cy.clickOnCreateInboundOrder();
         cy.validationShippers();
         cy.fixture('Shippers').then((data) => {
@@ -51,6 +52,8 @@ describe('Validation of Shipper and Product Details in the Create Order', () => 
             }).then(() => {
                 const sortedShippers = data.shipperName.sort();
                 expect(JSON.stringify(shipperNames.sort())).to.deep.equal(JSON.stringify(sortedShippers), 'Shippers matched');
+                cy.log("All the Shippers are related to the respective Carrier")
+
             })
         })
     });
