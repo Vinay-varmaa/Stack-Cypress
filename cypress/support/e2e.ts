@@ -1,18 +1,3 @@
-// ***********************************************************
-// This example support/e2e.ts is processed and
-// loaded automatically before your test files.
-//
-// This is a great place to put global configuration and
-// behavior that modifies Cypress.
-//
-// You can change the location of this file or turn off
-// automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
-// ***********************************************************
-
 // Import commands.js using ES2015 syntax:
 import './commands'
 
@@ -20,13 +5,6 @@ Cypress.Commands.add('pathname', (expectedpathname) => {
     return cy.location('pathname').should('eq', expectedpathname);
 });
 
-// Cypress.Commands.add('pathconsists', (fleetPathName) => {
-//     return cy.location('pathconsists').should('eq', fleetPathName);
-// });
-
-Cypress.Commands.add('pathinclude', (approxpathname) => {
-    return cy.location('pathname').should('include', approxpathname);
-})
 
 Cypress.Commands.add('login', (email, password) => {
     cy.visit("http://34.133.110.143:7073/")
@@ -251,6 +229,7 @@ Cypress.Commands.add('navigateToOrderModule', () => {
         } else {
             cy.log("Unable to Navigate to the Create Delivery Order")
         }
+        expect(name).to.eq("Create Delivery Order")
     })
     cy.fixture('orders/deliveryOrderDetails.json').then((data) => {
         cy.get("[id='0_D_los_code']").eq(0).type(data.LOS).wait(1000).click();
@@ -262,8 +241,9 @@ Cypress.Commands.add('navigateToOrderModule', () => {
         cy.get("[class='ant-row address-form-v2']").find("input").eq(3).type(data.State);
         cy.get("[class='ant-row address-form-v2']").find("input").eq(4).type(data.Zip);
         cy.get("[class='ant-row address-form-v2']").find("input").eq(5).type(data.Country);
-        cy.get("[class='ant-modal-footer']").find("button").eq(1).click();
-        cy.get("[class='ant-card-extra']").find("button").eq(2).click().wait(2000)
+        cy.get("[class='ant-modal-footer']").find("button").eq(1).click();//Click on Add Address
+        // cy.get("[class='ant-card-extra']").find("button").eq(2).click().wait(2000);
+        // cy.get("[class='ant-table-tbody']").find("tr");
         cy.get("[name='hawb']").type(data.HAWB);
         cy.get("[class='create-order-sidebar']").find("button").eq(1).click();
         cy.get("[class='chip']").invoke("text").then(($status) => {
@@ -274,8 +254,7 @@ Cypress.Commands.add('navigateToOrderModule', () => {
             } else {
                 cy.log("Delivery Order is not created ")
             }
+            expect(Status).to.eq('NEW', 'Delivery order in Fleet is Created Successfully')
         })
     })
-
-
 });
