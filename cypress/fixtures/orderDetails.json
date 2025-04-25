@@ -1,0 +1,18 @@
+{
+  "AddressLine1": "456 William Street, Manhattan, New York, New York, 10038, United States",
+  "AddressLine2": "123 William Street",
+  "City" : "New York",
+  "State": "New York",
+  "Zip": "10038",
+  "Country": "India",
+  "LOS": "Test los",
+  "HAWB": "476",
+  "MAWB": "762147",
+  "ItemName": "Laptop",
+  "TotalWeight": "150",
+  "Reference1" : "147REF1",
+  "Reference2": "258REF2",
+  "ConsigneeAddress": "123 William Street, Manhattan, New York, New York, 10038, United States",
+  "ConsigneeContact": "9589585558",
+  "ConsigneeContactName": "Varma"
+}

@@ -6,15 +6,16 @@ describe('Create Fleet Order', () => {
     beforeEach('Login to the application', () => {
         cy.fleetlogin();
     });
-    it('Create Delivery Order', () => {
+    it('Create Move Order', () => {
         cy.navigateToOrderModule();
-        cy.selectOrderType(1);
-        cy.selectLevelOfServiceForDeliveryOrder();
-        cy.fillOrderPrimaryDetails()
+        cy.selectOrderType(4);
+        cy.selectLevelOfServiceForPickupOrder();
+        cy.fillOrderPrimaryDetails();
+        cy.selectLevelOfServiceForTransferOrder();
+        cy.fillOrderSecondaryDetails()
         cy.fillReferenceNumbers();
         cy.fillConsigneeDetails();
-        cy.addItem();
+        cy.addItemForTransferOrder();
         cy.clickOnCreateOrder();
-
     })
 })

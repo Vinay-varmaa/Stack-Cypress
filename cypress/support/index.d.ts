@@ -16,5 +16,39 @@ declare namespace Cypress {
         validationShippers(): void
 
         navigateToOrderModule(): void
+
+        selectOrderType(Index: any): void
+
+        selectLevelOfService(): void
+
+        fillReferenceNumbers(): void
+
+        fillConsigneeDetails(): void
+
+        addItem(): void
+
+        clickOnCreateOrder(): void
+
+        selectLevelOfServiceForDeliveryOrder(): void
+
+        fillOrderPrimaryDetails(): void
+
+        fillOrderSecondaryDetails(): void
+
+        fillDeliveryOrderPrimaryDetails(): void
+
+        selectLevelOfServiceForTransferPickupOrder(): void
+
+        addItemForTransferOrder(): void
+
+        selectOriginLevelOfServiceForLinehaulOrder(): void
+
+        selectDestinationLevelOfServiceForLinehaulOrder(): void
+
+        selectLevelOfServiceForTransferOrder(): void
+
+        selectLevelOfServiceForPickupOrder(): void
+
+        fillLinehaulOrderDetails(): void
     }
 }

@@ -13,7 +13,7 @@ describe('create the inbound order in stack', () => {
         // cy.pathname('/viewOrder').then(() => {
         //     cy.log('Test Passed : "Navigated to the orders page"');
         // });
-        cy.fixture('order.json').then((data) => {
+        cy.fixture('orderDetails.json').then((data) => {
             cy.log(`order number from fixture : ${data.orderNumber}`)
             cy.SearchOrder(data.orderNumber);
             cy.get("[class='p-element p-datatable-tbody']").find("a").then(($a) => {
