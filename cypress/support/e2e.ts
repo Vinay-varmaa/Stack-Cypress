@@ -86,7 +86,7 @@ Cypress.Commands.add('addItemForTransferOrder', () => {
 
 Cypress.Commands.add('clickOnCreateOrder', () => {
     cy.get("[class='create-order-sidebar']").find("button").eq(1).click();
-    cy.wait(3000);
+    cy.wait(9000);
     cy.get("[class='chip']").invoke("text").then(($status) => {
         const Status = $status.trim();
         cy.log(Status);
@@ -164,41 +164,41 @@ Cypress.Commands.add('fillLinehaulOrderDetails', () => {
     })
 })
 
+Cypress.Commands.add('fillAutoLinehaulDetails', () => {
+    cy.fixture('orders/autoLinehaulDetails.json').then((data) => {
+        cy.get("[class='address_location_innerContainer table-col']").find("button").eq(0).click();
+        cy.get("[class='ant-row address-form-v2']").find("input").eq(12).type(data.AddressLine1);
+        cy.get("[class='ant-row address-form-v2']").find("input").eq(13).type(data.AddressLine2);
+        cy.get("[class='ant-row address-form-v2']").find("input").eq(14).type(data.City);
+        cy.get("[class='ant-row address-form-v2']").find("input").eq(15).type(data.State);
+        cy.get("[class='ant-row address-form-v2']").find("input").eq(16).type(data.Zip);
+        cy.get("[class='ant-row address-form-v2']").find("input").eq(17).type(data.Country);
+        cy.get("[class='ant-modal-footer']").find("button").eq(3).click();
+    })
+})
 
-// Cypress.Commands.add('')
-//                 cy.get("[class='create-order-sidebar']").find("button").eq(1).click();
-//                 // if(cy.get("[class='ant-modal-confirm-btns']").)
-//
-//                     cy.log("")
-//                 })
-//             })
-//         } else {
-//             cy.fixture('orders/orderDetails.json').then((data) => {
-//                 cy.get("[id='0_D_los_code']").eq(0).type(data.LOS).wait(1000).click();
-//                 // cy.get("[class='location_heading']").click();
-//                 cy.get("[class='address_location_innerContainer table-col']").find("button").click();
-//                 cy.get("[class='ant-row address-form-v2']").find("input").eq(0).type(data.AddressLine1);
-//                 cy.get("[class='ant-row address-form-v2']").find("input").eq(1).type(data.AddressLine2);
-//                 cy.get("[class='ant-row address-form-v2']").find("input").eq(2).type(data.City);
-//                 cy.get("[class='ant-row address-form-v2']").find("input").eq(3).type(data.State);
-//                 cy.get("[class='ant-row address-form-v2']").find("input").eq(4).type(data.Zip);
-//                 cy.get("[class='ant-row address-form-v2']").find("input").eq(5).type(data.Country);
-//                 cy.get("[class='ant-modal-footer']").find("button").eq(1).click();//Click on Add Address
-//                 // cy.get("[class='ant-card-extra']").find("button").eq(2).click().wait(2000);
-//                 // cy.get("[class='ant-table-tbody']").find("tr");
-//                 cy.get("[name='hawb']").type(data.HAWB);
-//                 cy.get("[class='create-order-sidebar']").find("button").eq(1).click();
-//                 cy.get("[class='chip']").invoke("text").then(($status) => {
-//                     const Status = $status.trim();
-//                     cy.log(Status);
-//                     if (Status === 'NEW') {
-//                         cy.log("Delivery Order Created Sucessfully")
-//                     } else {
-//                         cy.log("Delivery Order is not created ")
-//                     }
-//                     expect(Status).to.eq('NEW', 'Delivery order in Fleet is Created Successfully')
-//                 })
-//             })
-//         }
-//     })
-// });
+// Cypress.Commands.add('appointments',()=>{
+//     cy.get("[placeholder='MMM DD, YYYY']").click();
+//     cy.get("")
+// })
+
+Cypress.Commands.add('checkTheLinehaulOrder', () => {
+    cy.get("[class='anchor_cursor clickableLink']").find("span").eq(0).invoke("text").then(($linehaulNumber) => {
+        cy.get("[class = 'menu-container']").find("li").eq(1).click().wait(2000);
+        cy.get("[href='/linehaul']").click();
+        cy.pathname('/linehaul');
+        cy.log("Navigated to linehaul orders Module Successfully");
+        cy.get("[placeholder='Search Order No, HAWB, MAWB, Ref No, IT No or Tags']").wait(2000).type($linehaulNumber.trim(), {force: true});
+        cy.get("[class='headerOptionDiv headerFilter']").find("span").eq(1).click().wait(2000);
+        cy.get("[class='ant-table-tbody']").find("td").eq(1).wait(2000).invoke("text").then(($orderNumber) => {
+            cy.log($orderNumber);
+            if ($orderNumber.trim() === $linehaulNumber.trim()) {
+                cy.log("Auto Linehaul Order Created Successfully")
+            } else {
+                cy.log("Unable to Create the Auto Linehaul Order...Please check the Pre0-Conditions!!!")
+            }
+
+        })
+    })
+
+})

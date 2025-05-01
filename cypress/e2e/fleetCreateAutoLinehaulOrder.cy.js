@@ -6,16 +6,17 @@ describe('Create Fleet Order', () => {
     beforeEach('Login to the application', () => {
         cy.fleetlogin();
     });
-    it('Create Pickup Order', () => {
+    it('Create Auto Linehaul Order', () => {
         cy.navigateToOrderModule();
-        cy.selectOrderType(0);
+        cy.selectOrderType(5);
         cy.selectLevelOfServiceForPickupOrder();
         cy.fillOrderPrimaryDetails();
+        cy.selectLevelOfServiceForTransferOrder();
+        cy.fillAutoLinehaulDetails();
         cy.fillReferenceNumbers();
         cy.fillConsigneeDetails();
-        // cy.appointments();
-        cy.addItem();
+        cy.addItemForTransferOrder();
         cy.clickOnCreateOrder();
-
+        cy.checkTheLinehaulOrder();
     })
 })

@@ -50,5 +50,11 @@ declare namespace Cypress {
         selectLevelOfServiceForPickupOrder(): void
 
         fillLinehaulOrderDetails(): void
+
+        appointments(): void
+
+        fillAutoLinehaulDetails(): void
+
+        checkTheLinehaulOrder(): void
     }
 }
